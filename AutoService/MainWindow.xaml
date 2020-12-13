@@ -9,8 +9,7 @@
         xmlns:authentication="clr-namespace:AutoService.Views"
         Title="AutoRentService" Height="600" Width="1000">
     <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-        
-        <authentication:SignInView Height="300" Width="250"></authentication:SignInView>
+        <ContentControl Name="_contentControl" IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
         <fa:ImageAwesome Icon="Refresh" Width="50" Height="50" Spin="True" 
                Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></fa:ImageAwesome>
     </Grid>

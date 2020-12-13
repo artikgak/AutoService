@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:AutoService.Views"
              xmlns:tools="clr-namespace:AutoService.Views.Tools.Control"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000"
+             VerticalAlignment="Top" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

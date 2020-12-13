@@ -12,17 +12,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoService.Tools.Navigation;
+using AutoService.ViewModels;
 
 namespace AutoService.Views
 {
     /// <summary>
     /// Interaction logic for CarCatalogView.xaml
     /// </summary>
-    public partial class CarCatalogView : UserControl
+    public partial class CarCatalogView : UserControl, INavigatable
     {
         public CarCatalogView()
         {
             InitializeComponent();
+            DataContext = new CarCatalogViewModel();
         }
     }
 }

@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoService.Views" xmlns:control="clr-namespace:AutoService.Views.Tools.Control"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1000">
+             d:DesignHeight="600" d:DesignWidth="1000"
+             VerticalAlignment="Top" HorizontalAlignment="Stretch">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -22,7 +23,7 @@
                 VerticalAlignment="Center"
                 Height="30"
                 Margin="175 5 15 5"
-                Command ="{Binding MyPofileCommand}"
+                Command ="{Binding UserProfileCommand}"
         >My profile</Button>
         <Label Grid.Row="0" Grid.Column="0">Pick your car!</Label>
         <Button Grid.Row="1" Grid.Column="1"
