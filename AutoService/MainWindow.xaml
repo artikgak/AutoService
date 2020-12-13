@@ -10,7 +10,7 @@
         Title="AutoRentService" Height="600" Width="1000">
     <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
         
-        <authentication:SignInView Height="300" Width="350"></authentication:SignInView>
+        <authentication:SignInView Height="300" Width="250"></authentication:SignInView>
         <fa:ImageAwesome Icon="Refresh" Width="50" Height="50" Spin="True" 
                Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></fa:ImageAwesome>
     </Grid>

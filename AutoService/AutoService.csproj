@@ -79,8 +79,16 @@
     <Compile Include="Tools\BaseViewModel.cs" />
     <Compile Include="Tools\ILoaderOwner.cs" />
     <Compile Include="Tools\Managers\LoaderManager.cs" />
+    <Compile Include="ViewModels\CarCatalogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />
+    <Compile Include="ViewModels\UserProfileViewModel.cs" />
+    <Compile Include="Views\CarCatalogView.xaml.cs">
+      <DependentUpon>CarCatalogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Tools\Control\CarControl.xaml.cs">
+      <DependentUpon>CarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Tools\Control\LabelAndPasswordControl.xaml.cs">
       <DependentUpon>LabelAndPasswordControl.xaml</DependentUpon>
     </Compile>
@@ -91,6 +99,9 @@
     <Compile Include="Tools\MVVM\RelayCommand.cs" />
     <Compile Include="Views\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserProfileView.xaml.cs">
+      <DependentUpon>UserProfileView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -104,6 +115,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\CarCatalogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Tools\Control\CarControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Tools\Control\LabelAndPasswordControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,6 +132,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SignInView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserProfileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
