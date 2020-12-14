@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoService.Exceptions;
 using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
@@ -19,6 +20,7 @@ namespace AutoService.ViewModels
         #region Commands
         private RelayCommand<object> _signInCommand;
         private RelayCommand<object> _closeCommand;
+        private RelayCommand<object> _registerCommand;
         #endregion
         #endregion
 
@@ -37,11 +39,7 @@ namespace AutoService.ViewModels
             get { return _password; }
             set
             {
-                _password = "";
-                for (int i = 0; i < value.Length; i++)
-                {
-                    _password += "*";
-                }
+                _password = value;
                 OnPropertyChanged();
             }
         }
@@ -56,6 +54,16 @@ namespace AutoService.ViewModels
                            SignInInplementation, o => CanExecuteCommand()));
             }
         }
+
+        public RelayCommand<object> RegisterCommand
+        {
+            get
+            {
+                return _registerCommand ?? (_registerCommand = new RelayCommand<object>(
+                           RegisterInplementation));
+            }
+        }
+        
 
         public RelayCommand<Object> CloseCommand
         {
@@ -77,12 +85,27 @@ namespace AutoService.ViewModels
         {
             LoaderManager.Instance.ShowLoader();
             await Task.Run(() => {
-                Thread.Sleep(200);
-                // to do login DB
+                try 
+                {
+                    string res = EasyEncryption.SHA.ComputeSHA1Hash(_login + _password + "secret");
+                    res = EasyEncryption.MD5.ComputeMD5Hash(res+"naukma");
+                    StationManager.Login(_login, res);
+                    // log login successful
+                }
+                catch(LoginException)
+                {
+                    MessageBox.Show($"Invalid login or password");
+                    //log
+                }
                 });
             LoaderManager.Instance.HideLoader();
-            //MessageBox.Show($"Login successful for user {_login}");
+            if (StationManager.CurrentUser == null) return;
             NavigationManager.Instance.Navigate(ViewType.CarCatalog);
+        }
+
+        private async void RegisterInplementation(object obj)
+        {
+            NavigationManager.Instance.Navigate(ViewType.Register);
         }
 
     }

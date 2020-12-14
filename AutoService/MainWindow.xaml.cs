@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.Navigation;
 using AutoService.ViewModels;
@@ -22,6 +23,8 @@ namespace AutoService
             DataContext = new MainWindowViewModel();
             NavigationManager.Instance.Initialize(new InitializationNavigationModel(this));
             NavigationManager.Instance.Navigate(ViewType.SignIn);
+            //string a = (FileFolderHelper.AppFolderPath);
+            StationManager.Instance.Initialize("user.sql");
         }
     }
 }
