@@ -4,6 +4,7 @@
     internal enum ViewType
     {
         SignIn,
+        Register,
         UserProfile,
         CarCatalog
     }

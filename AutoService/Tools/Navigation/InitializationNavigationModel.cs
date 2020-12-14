@@ -28,6 +28,9 @@ namespace AutoService.Tools.Navigation
                 case ViewType.CarCatalog:
                     ViewsDictionary.Add(viewType, new CarCatalogView());
                     break;
+                case ViewType.Register:
+                    ViewsDictionary.Add(viewType, new RegisterView());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
             }
