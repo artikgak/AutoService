@@ -31,14 +31,14 @@ namespace AutoService.ViewModels
         }
         #endregion
 
-        private async void UserProfileImplementation(object obj)
+        private /*async*/ void UserProfileImplementation(object obj)
         {
-            LoaderManager.Instance.ShowLoader();
+            /*LoaderManager.Instance.ShowLoader();
             await Task.Run(() => {
-                Thread.Sleep(200);
+                //Thread.Sleep(200);
                 // to do login DB
             });
-            LoaderManager.Instance.HideLoader();
+            LoaderManager.Instance.HideLoader();*/
             //MessageBox.Show($"Login successful for user {_login}");
             NavigationManager.Instance.Navigate(ViewType.UserProfile);
         }

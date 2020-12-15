@@ -15,7 +15,7 @@
                Content="{Binding Caption, RelativeSource={RelativeSource FindAncestor, 
             AncestorType=local:LabelAndTextControl}, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBox Name="TextBox" Grid.Row ="1" FontSize="14" FontWeight="Bold" Height="25" 
-                 VerticalAlignment="Center" MaxLength="10"
+                 VerticalAlignment="Center" MaxLength="20"
                  Text="{Binding Text, RelativeSource={RelativeSource FindAncestor, 
             AncestorType=local:LabelAndTextControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </Grid>
