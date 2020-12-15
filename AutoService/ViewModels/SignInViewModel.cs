@@ -91,6 +91,8 @@ namespace AutoService.ViewModels
                     res = EasyEncryption.MD5.ComputeMD5Hash(res+"naukma");
                     StationManager.Login(_login, res);
                     // log login successful
+                    Login = "";
+                    Password = "";
                 }
                 catch(LoginException)
                 {
@@ -105,6 +107,12 @@ namespace AutoService.ViewModels
 
         private async void RegisterInplementation(object obj)
         {
+            LoaderManager.Instance.ShowLoader();
+            await Task.Run(() => {
+                Login = "";
+                Password = "";
+            });
+            LoaderManager.Instance.HideLoader();
             NavigationManager.Instance.Navigate(ViewType.Register);
         }
 

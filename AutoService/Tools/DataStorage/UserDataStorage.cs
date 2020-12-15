@@ -39,27 +39,48 @@ namespace AutoService.Tools
             //GetUserByLogin("pikos777");
         }
 
-        void AddUser(User user)
+        internal void AddUser(User user)
         {
-            string quer = "INSERT INTO [Table] ([user_name], [email], [password])"+
-            " VALUES ('" + user.Login +  "', '" + user.Email + "', '" + user.Password + "');";
+            string quer = "INSERT INTO [user] ([login], [password], [email])" +
+            " VALUES ('" + user.Login +  "', '" + user.Password + "', '" + user.Email + "');";
             Execute_SQL(quer);
         }
 
-        internal void closeConnection() 
+        internal void CloseConnection() 
         { 
             if (_cn.State != ConnectionState.Closed) _cn.Close(); 
         }
 
         internal bool UserExists(string login)
         {
-            string quer = "SELECT * FROM [Table] WHERE [user_name]='" + login + "';";
+            string quer = "SELECT * FROM [user] WHERE [login]='" + login + "';";
             SqlCommand cmd_Command = new SqlCommand(quer, _cn);
             SqlDataReader reader = cmd_Command.ExecuteReader();
             bool res = reader.Read();
             reader.Close();
             return res;
         }
+
+        internal int LoginEmailFree(string login, string email)
+        {
+            string quer = "SELECT * FROM [user] WHERE [login]='" + login + "' OR [email]='" + email + "';";
+            SqlCommand cmd_Command = new SqlCommand(quer, _cn);
+            SqlDataReader reader = cmd_Command.ExecuteReader();
+            bool res = reader.Read();
+            if (!res)
+            {
+                reader.Close();
+                return 0;
+            }
+            if (((string)reader.GetValue(1)).Equals(login))
+            {
+                reader.Close();
+                return 1;
+            }
+            reader.Close();
+            return 2;
+        }
+        
 
         public static void Execute_SQL(string SQL_Text)
         {
@@ -69,15 +90,11 @@ namespace AutoService.Tools
 
         internal User GetUserByLogin(string login)
         {
-            string quer = "SELECT * FROM [Table] WHERE [user_name]='" + login + "';";
+            string quer = "SELECT * FROM [user] WHERE [login]='" + login + "';";
             SqlCommand cmd_Command = new SqlCommand(quer, _cn);
             SqlDataReader reader = cmd_Command.ExecuteReader();
             reader.Read();
-            object ob1 =  reader.GetValue(0);
-            object ob2 = reader.GetValue(1);
-            object ob3 = reader.GetValue(2);
-            object ob4 = reader.GetValue(3);
-            User res = new User((string)reader.GetValue(1), (string)reader.GetValue(3), (string)reader.GetValue(2));
+            User res = new User((string)reader.GetValue(1), (string)reader.GetValue(2), (string)reader.GetValue(3));
             reader.Close();
             return res;
         }

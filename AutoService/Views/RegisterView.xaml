@@ -62,7 +62,7 @@
                 Width="150"
                 Margin="5"
                 Grid.ColumnSpan="2"
-                Command ="{Binding BackToLoginCommand}"
-        >Back to login</Button>
+                Command ="{Binding BackToSignInCommand}"
+        >Back to SignIn</Button>
     </Grid>
 </UserControl>

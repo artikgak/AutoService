@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AutoService.Exceptions;
 
 namespace AutoService.Models
 {
@@ -16,13 +18,14 @@ namespace AutoService.Models
         {
             _login = login;
             _password = password;
+            if (!IsEmailValid(email))
+                throw new EmailDuplicateException();
             _email = email;
         }
 
-        public User(string login, string password)
+        private bool IsEmailValid(string email)
         {
-            _login = login;
-            SetPassword(password);
+            return Regex.IsMatch(email, "\\w+@(\\w+.)+[a-z]{2,4}", RegexOptions.IgnoreCase);
         }
 
         public string Login
@@ -56,7 +59,7 @@ namespace AutoService.Models
 
         public override string ToString()
         {
-            return $"{Login}\n{Email}";
+            return $"User: {Login}\nEmail: {Email}";
         }
 
     }

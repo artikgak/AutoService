@@ -15,6 +15,11 @@ namespace AutoService.ViewModels
 
         #region Fields
 
+        public string UserInfo
+        {
+            get { return StationManager.CurrentUser.ToString(); }
+        }
+
         #region Commands
         private RelayCommand<object> _backToCatalogCommand;
         private RelayCommand<object> _logOutCommand;
@@ -49,12 +54,14 @@ namespace AutoService.ViewModels
 
         private async void LogOutImplementation(object obj)
         {
-            LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => {
-                Thread.Sleep(200);
-            });
-            LoaderManager.Instance.HideLoader();
-            NavigationManager.Instance.Navigate(ViewType.SignIn);
+
+             LoaderManager.Instance.ShowLoader();
+             await Task.Run(() => {
+                 StationManager.LogOut();
+             });
+
+             LoaderManager.Instance.HideLoader();
+             NavigationManager.Instance.Navigate(ViewType.SignIn);
         }
 
     }
