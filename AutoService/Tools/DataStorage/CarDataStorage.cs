@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -10,6 +8,8 @@ namespace AutoService.Tools.DataStorage
 {
     class CarDataStorage
     {
+
+
         private IMongoDatabase db;
 
         public CarDataStorage(string database)
@@ -30,6 +30,11 @@ namespace AutoService.Tools.DataStorage
             return collection.Find(new BsonDocument()).ToList();
         }
 
+        public IMongoCollection<T> GetCollection<T>(string table)
+        {
+            return db.GetCollection<T>(table);
+        }
+
         public T LoadRecordById<T>(string table, Guid id)
         {
             var collection = db.GetCollection<T>(table);
@@ -41,8 +46,8 @@ namespace AutoService.Tools.DataStorage
         {
             var collection = db.GetCollection<T>(table);
             collection.ReplaceOne(new BsonDocument("_id", id),
-                record, 
-                new UpdateOptions { IsUpsert=true });
+                record,
+                new UpdateOptions { IsUpsert = true });
         }
 
         public void DeleteRecord<T>(string table, Guid id)

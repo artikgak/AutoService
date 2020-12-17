@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.Navigation;
 using AutoService.ViewModels;

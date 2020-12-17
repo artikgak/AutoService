@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoService.Exceptions;
@@ -15,7 +12,7 @@ namespace AutoService.ViewModels
 {
     class RegisterViewModel : BaseViewModel
     {
-        
+
         #region Fields
         private string _login;
         private string _email;
@@ -105,8 +102,9 @@ namespace AutoService.ViewModels
         {
             bool regSuc = false;
             LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => {
-                if(_login.Length<5)
+            await Task.Run(() =>
+            {
+                if (_login.Length < 5)
                 {
                     MessageBox.Show($"Login must be at least 5 symbols long");
                     return;
@@ -158,14 +156,15 @@ namespace AutoService.ViewModels
                 }
             });
             LoaderManager.Instance.HideLoader();
-            if(regSuc)
-            NavigationManager.Instance.Navigate(ViewType.SignIn);
+            if (regSuc)
+                NavigationManager.Instance.Navigate(ViewType.SignIn);
         }
 
         private async void BackToSignInImplementation(object obj)
         {
             LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 Login = "";
                 Email = "";
                 Password1 = "";

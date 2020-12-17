@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
 using AutoService.Tools.Navigation;
@@ -55,13 +50,14 @@ namespace AutoService.ViewModels
         private async void LogOutImplementation(object obj)
         {
 
-             LoaderManager.Instance.ShowLoader();
-             await Task.Run(() => {
-                 StationManager.LogOut();
-             });
+            LoaderManager.Instance.ShowLoader();
+            await Task.Run(() =>
+            {
+                StationManager.LogOut();
+            });
 
-             LoaderManager.Instance.HideLoader();
-             NavigationManager.Instance.Navigate(ViewType.SignIn);
+            LoaderManager.Instance.HideLoader();
+            NavigationManager.Instance.Navigate(ViewType.SignIn);
         }
 
     }

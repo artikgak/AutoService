@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoService.Models;
 
 namespace AutoService.Tools
@@ -25,10 +20,10 @@ namespace AutoService.Tools
 
         private void createUserTable()
         {
-           // if (!isTableExists("user"))
+            // if (!isTableExists("user"))
             {
-                string create_table_query = "CREATE TABLE user (" + 
-                                     "user_id AUTOINCREMENT NOT NULL," + 
+                string create_table_query = "CREATE TABLE user (" +
+                                     "user_id AUTOINCREMENT NOT NULL," +
                                      "user_name VARCHAR(15) NOT NULL," +
                                      "password VARCHAR(16) NOT NULL," +
                                      "emal VARCHAR(20) NOT NULL," +
@@ -42,13 +37,13 @@ namespace AutoService.Tools
         internal void AddUser(User user)
         {
             string quer = "INSERT INTO [user] ([login], [password], [email])" +
-            " VALUES ('" + user.Login +  "', '" + user.Password + "', '" + user.Email + "');";
+            " VALUES ('" + user.Login + "', '" + user.Password + "', '" + user.Email + "');";
             Execute_SQL(quer);
         }
 
-        internal void CloseConnection() 
-        { 
-            if (_cn.State != ConnectionState.Closed) _cn.Close(); 
+        internal void CloseConnection()
+        {
+            if (_cn.State != ConnectionState.Closed) _cn.Close();
         }
 
         internal bool UserExists(string login)
@@ -80,7 +75,7 @@ namespace AutoService.Tools
             reader.Close();
             return 2;
         }
-        
+
 
         public static void Execute_SQL(string SQL_Text)
         {

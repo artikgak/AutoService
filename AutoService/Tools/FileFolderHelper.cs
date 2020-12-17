@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoService.Tools
 {
@@ -23,7 +19,7 @@ namespace AutoService.Tools
             string filePath = Path.Combine(AppFolderPath, fileName);
             if (!CreateFolderAndCheckFileExistance(filePath))
                 File.Create(filePath);
-       
+
             return filePath;
         }
 

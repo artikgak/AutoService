@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AutoService.Views" xmlns:control="clr-namespace:AutoService.Views.Tools.Control"
+             xmlns:local="clr-namespace:AutoService.Views" 
+             xmlns:control="clr-namespace:AutoService.Views.Tools.Control"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:range="clr-namespace:Syncfusion.SfRangeSlider.XForms;assembly=Syncfusion.SfRangeSlider.XForms"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000"
              VerticalAlignment="Top" HorizontalAlignment="Stretch">
@@ -12,13 +15,16 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="2"
+        <Button Grid.Row="0" Grid.Column="4"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
                 Height="30"
@@ -26,14 +32,60 @@
                 Command ="{Binding UserProfileCommand}"
         >My profile</Button>
         <Label Grid.Row="0" Grid.Column="0">Pick your car!</Label>
-        <Button Grid.Row="1" Grid.Column="1"
-                HorizontalAlignment="Stretch"
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Mark</Label>
+        <ComboBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Width="120" Margin="5"
+                  ItemsSource="{Binding MarkList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+
+        <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">Model</Label>
+        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="120" Margin="5"
+                  ItemsSource="{Binding ModelList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding ModelEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
+
+        <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">Gear box type</Label>
+        <ComboBox Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Width="120" Margin="5"
+                  ItemsSource="{Binding GearBoxList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedGearBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ></ComboBox>
+
+        <Label Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">Price per hour/day</Label>
+
+        <Grid Grid.Column="3" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <controls:RangeSlider Grid.Row="0" Grid.Column="1" 
+                                  Minimum="{Binding MinimumVal, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  Maximum="{Binding MaximumVal, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="5" 
+                       IsMoveToPointEnabled ="True" SmallChange="1" Interval="5"
+                       LowerValue="{Binding LeftVal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                       UpperValue="{Binding RightVal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                       ></controls:RangeSlider>
+        <TextBlock Grid.Row="0" Grid.Column="0" Width="30" HorizontalAlignment="Right" Margin="2"
+                   VerticalAlignment="Center" FontSize="16"
+               Text="{Binding LeftRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="2" Width="30" HorizontalAlignment="Left" Margin="2"
+                   VerticalAlignment="Center" FontSize="16"
+                   Text="{Binding RightRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        </Grid>
+        <Button Grid.Row="1" Grid.Column="4" Grid.RowSpan="2"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Height="30"
-                Margin="135 5 135 5"
-                Command ="{Binding MyPofileCommand}"
+                Height="30" Width="100"
+                Margin="15 5"
+                Command ="{Binding SearchCommand}"
         >Search</Button>
-        <ListView Margin="5" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Name="CarCatalogList">
+        <ListView Margin="5" Background="SandyBrown" Height="450" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Grid.RowSpan="2" Name="CarCatalogList"
+                  ItemsSource="{Binding CarsCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectionMode="Single"
+                  ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <control:CarControl></control:CarControl>

@@ -22,8 +22,8 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="18"
-               >Welcome!</Label>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontSize="24"
+               Foreground="White">Welcome</Label>
         <tools:LabelAndTextControl Width="Auto" Grid.Row="1" Grid.Column="0"
                                     Grid.ColumnSpan="2" Margin="5"
                                     Caption="Login"
@@ -31,7 +31,7 @@
         </tools:LabelAndTextControl>
         <tools:LabelAndPasswordControl Grid.Row="2" Grid.Column="0"
                                        Grid.ColumnSpan="2" Margin="5"
-                                       Caption="Password"
+                                       Caption="Password" 
                                        Password ="{Binding Password, Mode=TwoWay, 
             UpdateSourceTrigger=PropertyChanged}"></tools:LabelAndPasswordControl>
         <Button Grid.Row="3" Grid.Column="0"
