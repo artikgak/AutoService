@@ -27,7 +27,7 @@
         <Button Grid.Row="0" Grid.Column="4"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
-                Height="30"
+                Height="30" Width="100"
                 Margin="175 5 15 5"
                 Command ="{Binding UserProfileCommand}"
         >My profile</Button>
@@ -84,7 +84,8 @@
         >Search</Button>
         <ListView Margin="5" Background="SandyBrown" Height="450" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Grid.RowSpan="2" Name="CarCatalogList"
                   ItemsSource="{Binding CarsCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  SelectionMode="Single"
+                  SelectionMode="Single" HorizontalContentAlignment="Stretch"
+                  SelectedIndex="{Binding SelectedCarIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.ItemTemplate>
                 <DataTemplate>

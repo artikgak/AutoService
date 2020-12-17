@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using AutoService.Models;
 
@@ -56,6 +58,53 @@ namespace AutoService.Tools
             return res;
         }
 
+        internal List<Guid> AllCarsInRent()
+        {
+            string quer = "SELECT [car_id] FROM [rent] WHERE [rent_end]>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "';";
+            SqlCommand cmd_Command = new SqlCommand(quer, _cn);
+            SqlDataReader reader = cmd_Command.ExecuteReader();
+            List<Guid> res = new List<Guid>();
+            while (reader.Read())
+                res.Add(new Guid((string)reader.GetValue(0)));
+            reader.Close();
+            return res;
+        }
+        internal void InsertCarRent(Guid carId, long userId, DateTime timeBegin, DateTime timeEnd)
+        {
+            string quer = "INSERT INTO [rent] ([car_id], [user_id], [rent_begin], [rent_end])" +
+            " VALUES ('" + carId.ToString() + "', '" + userId + "', '" 
+            + timeBegin.ToString("yyyy-MM-dd HH:mm:ss.fff") + "', '" + timeEnd.ToString("yyyy-MM-dd HH:mm:ss.fff") + "');";
+            Execute_SQL(quer);
+        }
+
+        internal bool RentAvail(long userId)
+        {
+            string quer = "SELECT * FROM [rent] WHERE [user_id]='" + userId + "';";
+            SqlCommand cmd_Command = new SqlCommand(quer, _cn);
+            SqlDataReader reader = cmd_Command.ExecuteReader();
+            bool res = !reader.Read();
+            reader.Close();
+            return res;
+        }
+
+        internal bool CarRentExists(Guid carId)
+        {
+            string quer = "SELECT * FROM [rent] WHERE [car_id]='" + carId.ToString() + "';";
+            SqlCommand cmd_Command = new SqlCommand(quer, _cn);
+            SqlDataReader reader = cmd_Command.ExecuteReader();
+            bool res = reader.Read();
+            reader.Close();
+            return res;
+        }
+
+        internal void UpdateCarRent(Guid carId, long userId, DateTime timeBegin, DateTime timeEnd)
+        {
+            string quer = "UPDATE [rent] SET [user_id]='" + userId + "', " +
+                "[rent_begin]='" + timeBegin.ToString("yyyy-MM-dd HH:mm:ss.fff") + "', " +
+                "[rent_end]='" + timeEnd.ToString("yyyy-MM-dd HH:mm:ss.fff") + "' WHERE [car_id]='" + carId.ToString() + "';";
+            Execute_SQL(quer);
+        }
+
         internal int LoginEmailFree(string login, string email)
         {
             string quer = "SELECT * FROM [user] WHERE [login]='" + login + "' OR [email]='" + email + "';";
@@ -89,7 +138,7 @@ namespace AutoService.Tools
             SqlCommand cmd_Command = new SqlCommand(quer, _cn);
             SqlDataReader reader = cmd_Command.ExecuteReader();
             reader.Read();
-            User res = new User((string)reader.GetValue(1), (string)reader.GetValue(2), (string)reader.GetValue(3));
+            User res = new User((long)reader.GetValue(0),(string)reader.GetValue(1), (string)reader.GetValue(2), (string)reader.GetValue(3));
             reader.Close();
             return res;
         }

@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using AutoService.Exceptions;
 using AutoService.Models;
 using AutoService.Tools.DataStorage;
+using AutoService.ViewModels;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -95,32 +99,62 @@ namespace AutoService.Tools.Managers
         internal static List<string> getAllModels(string mark)
         {
             var filter = Builders<Car>.Filter.Eq("Mark", mark);
-
-               
             return _cardataStorage.GetCollection<Car>("Autos")
                 .Distinct<string>("Model", filter).ToList();
         }
 
-        internal static List<Car> getCars(string mark, string model, string gearBox, int priceFrom, int priceTo)
+        internal static ObservableCollection<CarViewModel> getCars(string mark, string model, 
+            string gearBox, int priceFrom, int priceTo)
         {
             var coll = _cardataStorage.GetCollection<Car>("Autos");
+
             BsonDocument bmark = mark.Equals("Not Selected") ? new BsonDocument() : new BsonDocument("Mark", mark);
             BsonDocument bmodel = model.Equals("Not Selected") ? new BsonDocument() : new BsonDocument("Model", model);
             BsonDocument bgearbox = gearBox.Equals("Not Selected") ? new BsonDocument() : new BsonDocument("GearBox", gearBox);
             BsonDocument bPrFrom = new BsonDocument("Price", new BsonDocument("$gte", priceFrom));
             BsonDocument bPrTo = new BsonDocument("Price", new BsonDocument("$lte", priceTo));
-
+            var alreadyInRent = AllCarsInRent();
+            var notRented = Builders<Car>.Filter.Nin("_id", alreadyInRent);
+            /*
             var filter = new BsonDocument("$and", new BsonArray{
                 bmark, bmodel, bgearbox, bPrFrom, bPrTo
+            });*/
+
+            var filter = Builders<Car>.Filter.And(new List<FilterDefinition<Car>> {
+                bmark, bmodel, bgearbox, bPrFrom, bPrTo, notRented
             });
 
-            return coll.Find(filter).ToList();
+            List<Car> carlist = coll.Find(filter).ToList();
+            ObservableCollection<CarViewModel> os = new ObservableCollection<CarViewModel>();
+            for (int i = 0; i < carlist.Count; ++i)
+                os.Add(new CarViewModel(carlist[i]));
+            return os;
         }
 
         internal static void LogOut()
         {
             Debug.Assert(CurrentUser != null);
             CurrentUser = null;
+        }
+
+        internal static void AddCarRent(Guid carId, long userId, DateTime timeBegin, DateTime timeEnd)
+        {
+            Debug.Assert(CurrentUser != null);
+            if (_userdataStorage.CarRentExists(carId))
+                _userdataStorage.UpdateCarRent(carId, userId, timeBegin, timeEnd);
+            else
+                _userdataStorage.InsertCarRent(carId, userId, timeBegin, timeEnd);
+        }
+
+        internal static bool RentAvail()
+        {
+            return _userdataStorage.RentAvail(CurrentUser.ID);
+        }
+
+        internal static List<Guid> AllCarsInRent()
+        {
+            Debug.Assert(CurrentUser != null);
+            return _userdataStorage.AllCarsInRent();
         }
 
         internal static void Login(string login, string password)

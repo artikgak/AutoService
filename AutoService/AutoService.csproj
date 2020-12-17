@@ -223,6 +223,7 @@
     <Compile Include="Tools\Navigation\INavigationModel.cs" />
     <Compile Include="Tools\Navigation\InitializationNavigationModel.cs" />
     <Compile Include="ViewModels\CarCatalogViewModel.cs" />
+    <Compile Include="ViewModels\CarViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SignInViewModel.cs" />

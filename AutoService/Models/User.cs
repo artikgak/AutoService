@@ -5,9 +5,20 @@ namespace AutoService.Models
 {
     internal class User
     {
+        private long _id;
         private string _login;
         private string _password;
         private string _email;
+
+        public User(long id, string login, string password, string email)
+        {
+            _id = id;
+            _login = login;
+            _password = password;
+            if (!IsEmailValid(email))
+                throw new EmailDuplicateException();
+            _email = email;
+        }
 
         public User(string login, string password, string email)
         {
@@ -38,6 +49,11 @@ namespace AutoService.Models
         public string Password
         {
             get { return _password; }
+        }
+
+        public long ID
+        {
+            get { return _id; }
         }
 
         private void SetPassword(string password)

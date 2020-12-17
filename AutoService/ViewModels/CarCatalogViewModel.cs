@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoService.Models;
@@ -14,7 +15,7 @@ namespace AutoService.ViewModels
     {
         #region Fields
 
-        public ObservableCollection<Car> _carsCollection;
+        public ObservableCollection<CarViewModel> _carsCollection;
         private ObservableCollection<string> _marks;
         private string _selectedmark;
         private ObservableCollection<string> _models;
@@ -28,15 +29,29 @@ namespace AutoService.ViewModels
         private int _leftVal;
         private int _rigthval;
 
+        private int _selectedCar;
+
+        public int SelectedCar
+        {
+            get { return _selectedCar; }
+            set
+            {
+                _selectedCar = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region Commands
         private RelayCommand<object> _userProfileCommand;
         private RelayCommand<object> _searchCommand;
+
         #endregion
         #endregion
 
         internal CarCatalogViewModel()
         {
-            _carsCollection = new ObservableCollection<Car>();
+            _carsCollection = new ObservableCollection<CarViewModel>();
+            _carsCollection.CollectionChanged += ContentCollectionChanged;
             _models = new ObservableCollection<string>();
             _models.Add("Not Selected");
             _marks = new ObservableCollection<string>();
@@ -47,13 +62,16 @@ namespace AutoService.ViewModels
             _gearBox.Add("Not Selected");
             SelectedGearBox = _gearBox[0];
             _modelEnabled = false;
+
             LeftVal = (int)StationManager.getMinPrice();
             LeftRange = LeftVal.ToString();
             RightVal = (int)StationManager.getMaxPrice();
             RightRange = RightVal.ToString();
         }
 
-        public ObservableCollection<Car> CarsCollection
+        
+
+        public ObservableCollection<CarViewModel> CarsCollection
         {
             get { return _carsCollection; }
             private set
@@ -219,6 +237,16 @@ namespace AutoService.ViewModels
             }
         }
 
+        public async void ContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            LoaderManager.Instance.ShowLoader();
+            await Task.Run(() => {
+                _carsCollection.RemoveAt(SelectedCar);
+                CarsCollection = _carsCollection;
+            });
+            LoaderManager.Instance.HideLoader();
+        }
+
         void UpdateModels()
         {
             var list = StationManager.getAllModels(SelectedMark);
@@ -247,11 +275,12 @@ namespace AutoService.ViewModels
             LoaderManager.Instance.ShowLoader();
             await Task.Run(() => {
                 //CarsCollection = new ObservableCollection<Car>(StationManager.getAllCars());
-                CarsCollection = new ObservableCollection<Car>(StationManager
-                    .getCars(SelectedMark, SelectedModel, SelectedGearBox, LeftVal, RightVal));
+                CarsCollection = StationManager.getCars(SelectedMark, SelectedModel, 
+                    SelectedGearBox, LeftVal, RightVal);
             });
             //MessageBox.Show($"SEARCHING finished");
             LoaderManager.Instance.HideLoader();
+            
         }
 
     }

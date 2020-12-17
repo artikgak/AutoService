@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using AutoService.ViewModels;
 
 namespace AutoService.Views.Tools.Control
 {
@@ -10,6 +11,7 @@ namespace AutoService.Views.Tools.Control
         public CarControl()
         {
             InitializeComponent();
+            //DataContext = new CarViewModel();
         }
     }
 }
