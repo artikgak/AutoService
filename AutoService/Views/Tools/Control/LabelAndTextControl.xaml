@@ -11,7 +11,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <Label Name="Label" Grid.Row="0" Height="25" FontWeight="Bold" FontSize="12" Margin="-2,-10,0,0"  
+        <Label Name="Label" Foreground="White" Grid.Row="0" Height="25" FontWeight="Bold" FontSize="12" Margin="-2,-10,0,0"  
                Content="{Binding Caption, RelativeSource={RelativeSource FindAncestor, 
             AncestorType=local:LabelAndTextControl}, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBox Name="TextBox" Grid.Row ="1" FontSize="14" FontWeight="Bold" Height="25" 

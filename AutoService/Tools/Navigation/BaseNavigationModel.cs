@@ -26,6 +26,11 @@ namespace AutoService.Tools.Navigation
 
         public void Navigate(ViewType viewType)
         {
+            if (viewType == ViewType.SignIn)
+            {
+                ViewsDictionary.Remove(ViewType.CarCatalog);
+                ViewsDictionary.Remove(ViewType.UserProfile);
+            }
             if (!ViewsDictionary.ContainsKey(viewType))
                 InitializeView(viewType);
             ContentOwner.ContentControl.Content = ViewsDictionary[viewType];

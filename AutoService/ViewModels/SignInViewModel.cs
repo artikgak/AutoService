@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using AutoService.Exceptions;
@@ -63,7 +62,7 @@ namespace AutoService.ViewModels
                            RegisterInplementation));
             }
         }
-        
+
 
         public RelayCommand<Object> CloseCommand
         {
@@ -84,22 +83,23 @@ namespace AutoService.ViewModels
         private async void SignInInplementation(object obj)
         {
             LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => {
-                try 
+            await Task.Run(() =>
+            {
+                try
                 {
                     string res = EasyEncryption.SHA.ComputeSHA1Hash(_login + _password + "secret");
-                    res = EasyEncryption.MD5.ComputeMD5Hash(res+"naukma");
+                    res = EasyEncryption.MD5.ComputeMD5Hash(res + "naukma");
                     StationManager.Login(_login, res);
                     // log login successful
                     Login = "";
                     Password = "";
                 }
-                catch(LoginException)
+                catch (LoginException)
                 {
                     MessageBox.Show($"Invalid login or password");
                     //log
                 }
-                });
+            });
             LoaderManager.Instance.HideLoader();
             if (StationManager.CurrentUser == null) return;
             NavigationManager.Instance.Navigate(ViewType.CarCatalog);
@@ -108,7 +108,8 @@ namespace AutoService.ViewModels
         private async void RegisterInplementation(object obj)
         {
             LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 Login = "";
                 Password = "";
             });

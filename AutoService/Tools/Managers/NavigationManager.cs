@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoService.Tools.Navigation;
-using AutoService.Views;
+﻿using AutoService.Tools.Navigation;
 
 namespace AutoService.Tools.Managers
 {
     class NavigationManager
     {
-
-        internal enum View { SignIn = 0, SignUp = 1, Main = 2 }
         private static readonly object Locker = new object();
         private static NavigationManager _instance;
         private MainWindow _navigationOwner;
