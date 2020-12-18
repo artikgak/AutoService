@@ -24,33 +24,33 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="4"
+        <Button Grid.Row="0" Grid.Column="4" FontWeight="SemiBold"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Center"
-                Height="30"
+                Height="30" Width="100"
                 Margin="175 5 15 5"
                 Command ="{Binding UserProfileCommand}"
         >My profile</Button>
-        <Label Grid.Row="0" Grid.Column="0">Pick your car!</Label>
-        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">Mark</Label>
-        <ComboBox Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Width="120" Margin="5"
+        <Label Grid.Row="0" Grid.Column="0" FontSize="16" FontWeight="SemiBold">Pick your car!</Label>
+        <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontWeight="SemiBold">Mark</Label>
+        <ComboBox Grid.Row="2" FontWeight="SemiBold" Grid.Column="0" HorizontalAlignment="Left" Width="120" Margin="5"
                   ItemsSource="{Binding MarkList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedMark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
 
-        <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">Model</Label>
-        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="120" Margin="5"
+        <Label Grid.Row="1" Grid.Column="1" FontWeight="SemiBold" HorizontalAlignment="Center">Model</Label>
+        <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="120" Margin="5" FontWeight="SemiBold"
                   ItemsSource="{Binding ModelList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   IsEnabled="{Binding ModelEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   ></ComboBox>
 
-        <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">Gear box type</Label>
-        <ComboBox Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Width="120" Margin="5"
+        <Label Grid.Row="1" FontWeight="SemiBold" Grid.Column="2" HorizontalAlignment="Center">Gear box type</Label>
+        <ComboBox Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Width="120" Margin="5" FontWeight="SemiBold"
                   ItemsSource="{Binding GearBoxList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedGearBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ></ComboBox>
 
-        <Label Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">Price per hour/day</Label>
+        <Label Grid.Row="1" Grid.Column="3" FontWeight="SemiBold" HorizontalAlignment="Center">Price per hour/day</Label>
 
         <Grid Grid.Column="3" Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -68,14 +68,14 @@
                        LowerValue="{Binding LeftVal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                        UpperValue="{Binding RightVal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                        ></controls:RangeSlider>
-        <TextBlock Grid.Row="0" Grid.Column="0" Width="30" HorizontalAlignment="Right" Margin="2"
-                   VerticalAlignment="Center" FontSize="16"
+        <TextBlock Grid.Row="0" Grid.Column="0" Width="30" HorizontalAlignment="Right" Margin="5"
+                   VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold" TextAlignment="Right"
                Text="{Binding LeftRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
-        <TextBlock Grid.Row="0" Grid.Column="2" Width="30" HorizontalAlignment="Left" Margin="2"
-                   VerticalAlignment="Center" FontSize="16"
+        <TextBlock Grid.Row="0" Grid.Column="2" Width="30" HorizontalAlignment="Left" Margin="5"
+                   VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold" TextAlignment="Left"
                    Text="{Binding RightRange, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
         </Grid>
-        <Button Grid.Row="1" Grid.Column="4" Grid.RowSpan="2"
+        <Button Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" FontWeight="SemiBold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Height="30" Width="100"
@@ -84,7 +84,8 @@
         >Search</Button>
         <ListView Margin="5" Background="SandyBrown" Height="450" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="3" Grid.RowSpan="2" Name="CarCatalogList"
                   ItemsSource="{Binding CarsCollection, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                  SelectionMode="Single"
+                  SelectionMode="Single" HorizontalContentAlignment="Stretch"
+                  SelectedIndex="{Binding SelectedCarIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible">
             <ListView.ItemTemplate>
                 <DataTemplate>

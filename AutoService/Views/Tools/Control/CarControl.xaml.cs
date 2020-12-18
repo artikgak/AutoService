@@ -10,6 +10,7 @@ namespace AutoService.Views.Tools.Control
         public CarControl()
         {
             InitializeComponent();
+            //DataContext = new CarViewModel();
         }
     }
 }

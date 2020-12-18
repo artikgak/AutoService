@@ -30,7 +30,6 @@ namespace AutoService.Tools.Managers
 
         private NavigationManager()
         {
-
         }
 
         internal void Initialize(INavigationModel navigationModel)

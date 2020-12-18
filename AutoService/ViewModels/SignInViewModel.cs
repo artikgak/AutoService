@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System.Windows;
 using AutoService.Exceptions;
+using AutoService.Logs;
+using AutoService.Models;
 using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
@@ -42,9 +44,9 @@ namespace AutoService.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         #region Commands
-
         public RelayCommand<object> SignInCommand
         {
             get
@@ -72,9 +74,6 @@ namespace AutoService.ViewModels
             }
         }
 
-        #endregion
-        #endregion
-
         private bool CanExecuteCommand()
         {
             return !string.IsNullOrWhiteSpace(_login) && !string.IsNullOrWhiteSpace(_password);
@@ -90,14 +89,20 @@ namespace AutoService.ViewModels
                     string res = EasyEncryption.SHA.ComputeSHA1Hash(_login + _password + "secret");
                     res = EasyEncryption.MD5.ComputeMD5Hash(res + "naukma");
                     StationManager.Login(_login, res);
-                    // log login successful
+                    StationManager.Log(new LogRegLog{Message = "Login sucessfull",
+                        LogDateTime = DateTime.Now, User = StationManager.CurrentUser});
                     Login = "";
                     Password = "";
                 }
                 catch (LoginException)
                 {
                     MessageBox.Show($"Invalid login or password");
-                    //log
+                    StationManager.Log(new LogRegLog
+                    {
+                        Message = "Login failed",
+                        LogDateTime = DateTime.Now,
+                        User = new User(_login)
+                    });
                 }
             });
             LoaderManager.Instance.HideLoader();
@@ -117,5 +122,6 @@ namespace AutoService.ViewModels
             NavigationManager.Instance.Navigate(ViewType.Register);
         }
 
+        #endregion
     }
 }

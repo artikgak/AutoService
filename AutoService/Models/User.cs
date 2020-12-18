@@ -1,13 +1,29 @@
 ﻿using System.Text.RegularExpressions;
 using AutoService.Exceptions;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace AutoService.Models
 {
     internal class User
     {
+
+        #region Fields
+        private long _id;
         private string _login;
         private string _password;
         private string _email;
+        #endregion
+
+        #region Constructors
+        public User(long id, string login, string password, string email)
+        {
+            _id = id;
+            _login = login;
+            _password = password;
+            if (!IsEmailValid(email))
+                throw new EmailDuplicateException();
+            _email = email;
+        }
 
         public User(string login, string password, string email)
         {
@@ -18,11 +34,14 @@ namespace AutoService.Models
             _email = email;
         }
 
-        private bool IsEmailValid(string email)
+        public User(string login)
         {
-            return Regex.IsMatch(email, "\\w+@(\\w+.)+[a-z]{2,4}", RegexOptions.IgnoreCase);
+            _login = login;
         }
 
+        #endregion
+
+        #region Properties
         public string Login
         {
             get { return _login; }
@@ -35,26 +54,26 @@ namespace AutoService.Models
             set { _email = value; }
         }
 
+        [BsonIgnore]
         public string Password
         {
             get { return _password; }
         }
 
-        private void SetPassword(string password)
+        public long ID
         {
-            //TODO Add encription
-            _password = password;
+            get { return _id; }
         }
-
-        internal bool CheckPassword(string password)
-        {
-            //TODO Compare encrypted passwords
-            return _password == password;
-        }
+        #endregion
 
         public override string ToString()
         {
             return $"User: {Login}\nEmail: {Email}";
+        }
+
+        private bool IsEmailValid(string email)
+        {
+            return Regex.IsMatch(email, "\\w+@(\\w+.)+[a-z]{2,4}", RegexOptions.IgnoreCase);
         }
 
     }
