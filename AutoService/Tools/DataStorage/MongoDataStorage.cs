@@ -6,11 +6,11 @@ using MongoDB.Driver;
 
 namespace AutoService.Tools.DataStorage
 {
-    class CarDataStorage
+    class MongoDataStorage
     {
-        private IMongoDatabase db;
+        private readonly IMongoDatabase db;
 
-        public CarDataStorage(string database)
+        public MongoDataStorage(string database)
         {
             var client = new MongoClient();
             db = client.GetDatabase(database);

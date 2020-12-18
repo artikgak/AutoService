@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using AutoService.Logs;
 using AutoService.Models;
 using AutoService.Tools;
 using AutoService.Tools.Managers;
@@ -188,11 +189,29 @@ namespace AutoService.ViewModels
                         , "Rent successfull !!!");
                 Rented = "Rented. Have a nice trip";
                 BackColor = Brushes.LightGreen;
-            } else
+                StationManager.Log(new RentLog
+                {
+                    Message = "Rent sucessfull.",
+                    Car = Car,
+                    User = StationManager.CurrentUser,
+                    RentBegin = DateTime.Now,
+                    RentEnd = (DateTime)_dateTimePicked,
+                    LogDateTime = DateTime.Now,
+                });
+            }
+            else
+            {
                 MessageBox.Show($"Dear {StationManager.CurrentUser.Login},\nAccording to our information you " +
                     $"\nare having car rented now.\n\nCompany policy allows only one rent \nat a time for each person.\n\n" +
                     $"If you still have any questions,\nplease contant us: helpCar.Rent@car.rent"
                         , "Rent restricted !!!");
+                StationManager.Log(new RentLog
+                {
+                    Message = "Rent fail. User already rents a car.",
+                    User = StationManager.CurrentUser,
+                    LogDateTime = DateTime.Now,
+                });
+            }
         }
         #endregion
 

@@ -125,6 +125,21 @@ namespace AutoService.Tools
             return res;
         }
 
+        internal List<DateTime> RentTime(Guid carId)
+        {
+            string quer = "SELECT * FROM [rent] WHERE [car_id]='" + carId + "';";
+            SqlCommand cmd_Command = new SqlCommand(quer, _cn);
+            SqlDataReader reader = cmd_Command.ExecuteReader();
+            reader.Read();
+
+            List<DateTime> res = new List<DateTime>();
+            res.Add((DateTime)reader.GetValue(2));
+            res.Add((DateTime)reader.GetValue(3));
+
+            reader.Close();
+            return res;
+        }
+
         internal Guid? CarRented(long userId)
         {
             string quer = "SELECT * FROM [rent] WHERE [user_id]='" + userId + "';";

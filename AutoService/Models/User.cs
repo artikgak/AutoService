@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using AutoService.Exceptions;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace AutoService.Models
 {
@@ -33,6 +34,11 @@ namespace AutoService.Models
             _email = email;
         }
 
+        public User(string login)
+        {
+            _login = login;
+        }
+
         #endregion
 
         #region Properties
@@ -48,6 +54,7 @@ namespace AutoService.Models
             set { _email = value; }
         }
 
+        [BsonIgnore]
         public string Password
         {
             get { return _password; }

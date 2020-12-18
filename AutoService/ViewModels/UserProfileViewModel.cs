@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoService.Models;
 using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
@@ -23,7 +25,9 @@ namespace AutoService.ViewModels
         {
             get 
             {
-                _carRentedInfo = StationManager.CarRented() != null ? "Present car in rent:\n" + StationManager.CarRented().ToString()
+                Car rented = StationManager.CarRented();
+                _carRentedInfo = rented != null ? "Present car in rent:\n" + rented.ToString() + 
+                    "\nPer hour:" + rented.Price + " grn"
                     : "No car rented at present.";
                 return _carRentedInfo;
             }
@@ -33,6 +37,18 @@ namespace AutoService.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string TimeRent
+        {
+            get
+            {
+                Car rented = StationManager.CarRented();
+                if (rented == null) return "";
+                List<DateTime> dt = StationManager.RentTime(rented.Guid);
+                return "Rent start: " + dt[0].ToString() + "\nRent end: " + dt[1].ToString();
+            }
+        }
+
 
         public Uri PhotoImg
         {

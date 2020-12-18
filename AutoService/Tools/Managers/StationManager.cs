@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using AutoService.Exceptions;
+using AutoService.Logs;
 using AutoService.Models;
 using AutoService.Tools.DataStorage;
 using AutoService.ViewModels;
@@ -17,7 +18,7 @@ namespace AutoService.Tools.Managers
 
         #region Fields
         private static UserDataStorage _userdataStorage;
-        private static CarDataStorage _cardataStorage;
+        private static MongoDataStorage _mongodataStorage;
         private static StationManager _instance;
         private static readonly object Locker = new object();
         #endregion
@@ -26,8 +27,7 @@ namespace AutoService.Tools.Managers
         {
             string filePath = FileFolderHelper.CreateFile(userDBfileName);
             _userdataStorage = new UserDataStorage(filePath);
-            _cardataStorage = new CarDataStorage(carDBfileName);
-
+            _mongodataStorage = new MongoDataStorage(carDBfileName);
             //FillCarsMethod();
         }
 
@@ -65,11 +65,11 @@ namespace AutoService.Tools.Managers
         }
 
         #region Cars MongoDB
-        internal static List<Car> getAllCars() { return _cardataStorage.LoadRecords<Car>("Autos"); }
+        internal static List<Car> getAllCars() { return _mongodataStorage.LoadRecords<Car>("Autos"); }
 
         internal static List<string> getAllMarks()
         {
-          return _cardataStorage.GetCollection<Car>("Autos")
+          return _mongodataStorage.GetCollection<Car>("Autos")
                 .Distinct<string>("Mark", FilterDefinition<Car>.Empty).ToList();
         }
 
@@ -79,35 +79,35 @@ namespace AutoService.Tools.Managers
             //var filter2 = Builders<Car>.Filter.Eq("Model", model);
             //var filterAnd = Builders<Car>.Filter.And(new List<FilterDefinition<Car>> { filter1, filter2 });
 
-            return _cardataStorage.GetCollection<Car>("Autos")
+            return _mongodataStorage.GetCollection<Car>("Autos")
                   .Distinct<string>("GearBox", FilterDefinition<Car>.Empty).ToList();
         }
 
         internal static int getMinPrice()
         {
             var sort = Builders<Car>.Sort.Ascending(x => x.Price);
-            var coll = _cardataStorage.GetCollection<Car>("Autos");
+            var coll = _mongodataStorage.GetCollection<Car>("Autos");
             return coll.Find(new BsonDocument()).Sort(sort).Limit(1).ToList()[0].Price;
         }
 
         internal static int getMaxPrice()
         {
             var sort = Builders<Car>.Sort.Descending(x => x.Price);
-            var coll = _cardataStorage.GetCollection<Car>("Autos");
+            var coll = _mongodataStorage.GetCollection<Car>("Autos");
             return coll.Find(new BsonDocument()).Sort(sort).Limit(1).ToList()[0].Price;
         }
 
         internal static List<string> getAllModels(string mark)
         {
             var filter = Builders<Car>.Filter.Eq("Mark", mark);
-            return _cardataStorage.GetCollection<Car>("Autos")
+            return _mongodataStorage.GetCollection<Car>("Autos")
                 .Distinct<string>("Model", filter).ToList();
         }
 
         internal static ObservableCollection<CarViewModel> getCars(string mark, string model, 
             string gearBox, int priceFrom, int priceTo)
         {
-            var coll = _cardataStorage.GetCollection<Car>("Autos");
+            var coll = _mongodataStorage.GetCollection<Car>("Autos");
 
             BsonDocument bmark = mark.Equals("Not Selected") ? new BsonDocument() : new BsonDocument("Mark", mark);
             BsonDocument bmodel = model.Equals("Not Selected") ? new BsonDocument() : new BsonDocument("Model", model);
@@ -153,13 +153,18 @@ namespace AutoService.Tools.Managers
         {
             Guid? carGuid = _userdataStorage.CarRented(CurrentUser.ID);
             if (carGuid == null) return null;
-            return _cardataStorage.LoadRecordById<Car>("Autos", (Guid)carGuid);
+            return _mongodataStorage.LoadRecordById<Car>("Autos", (Guid)carGuid);
         }
 
         internal static List<Guid> AllCarsInRent()
         {
             Debug.Assert(CurrentUser != null);
             return _userdataStorage.AllCarsInRent();
+        }
+
+        internal static List<DateTime> RentTime(Guid carId)
+        {
+            return _userdataStorage.RentTime(carId);
         }
 
         #endregion
@@ -196,6 +201,15 @@ namespace AutoService.Tools.Managers
                 throw new EmailDuplicateException(us.Email);
             // if exists with same email throw exception
             _userdataStorage.AddUser(us);
+        }
+
+        #endregion
+
+        #region Logs
+
+        internal static void Log(ILoggable log)
+        {
+            _mongodataStorage.InsertRecord<ILoggable>("Logs", log);
         }
 
         #endregion
