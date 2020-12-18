@@ -15,38 +15,33 @@ namespace AutoService.Tools.Managers
     class StationManager
     {
 
+        #region Fields
         private static UserDataStorage _userdataStorage;
         private static CarDataStorage _cardataStorage;
         private static StationManager _instance;
         private static readonly object Locker = new object();
+        #endregion
 
         internal void Initialize(string userDBfileName, string carDBfileName)
         {
             string filePath = FileFolderHelper.CreateFile(userDBfileName);
             _userdataStorage = new UserDataStorage(filePath);
-
             _cardataStorage = new CarDataStorage(carDBfileName);
-            //_cardataStorage.InsertRecord("Autos", new Car ( "lada","sedan" ));
-            //_cardataStorage.InsertRecord("Autos", new Car ("mersedes", "c3"));
-            //_cardataStorage.InsertRecord("Autos", new Car ("lanos", "s5"));
-            //var recs = _cardataStorage.LoadRecords<Car>("Autos");
-            //Car oneRec = _cardataStorage.LoadRecordById<Car>("Autos", new Guid("f2291801-9ba7-4c28-90fe-4802a72507f8"));
-            //_cardataStorage.UpsertRecord("Autos", oneRec.Guid, oneRec);
-            //_cardataStorage.DeleteRecord<Car>("Autos", oneRec.Guid);
-            //NewMethod();
+
+            //FillCarsMethod();
         }
 
-        private static void NewMethod()
+        private static void FillCarsMethod()
         {
-            _cardataStorage.InsertRecord("Autos", new Car("AUDI", "Q7", "AUTO", 55));
-            _cardataStorage.InsertRecord("Autos", new Car("AUDI", "100", "ROBOT", 131));
-            _cardataStorage.InsertRecord("Autos", new Car("AUDI", "e-tron", "MECHANICS", 75));
-            _cardataStorage.InsertRecord("Autos", new Car("BMW", "4-series", "AUTO", 37));
-            _cardataStorage.InsertRecord("Autos", new Car("BMW", "X5", "ROBOT", 45));
-            _cardataStorage.InsertRecord("Autos", new Car("BMW", "Z8", "AUTO", 61));
-            _cardataStorage.InsertRecord("Autos", new Car("MOSKVYCH", "2141", "MECHANICS", 125));
-            _cardataStorage.InsertRecord("Autos", new Car("LANOS", "T150", "MECHANICS", 93));
-            _cardataStorage.InsertRecord("Autos", new Car("VOLVO", "244", "VARIATOR", 37));
+            //_cardataStorage.InsertRecord("Autos", new Car("AUDI", "Q7", "AUTO", 55, "/Resources/AudiQ7.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("AUDI", "100", "ROBOT", 131, "/Resources/Audi100.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("AUDI", "e-tron", "MECHANICS", 75, "/Resources/Audie-tron.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("BMW", "4-series", "AUTO", 37, "/Resources/BMW4-series.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("BMW", "X5", "ROBOT", 45, "/Resources/BMWX5.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("BMW", "Z8", "AUTO", 61, "/Resources/BMWZ8.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("MOSKVYCH", "2141", "MECHANICS", 125, "/Resources/MOSKVYCH2141.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("LANOS", "T150", "MECHANICS", 93, "/Resources/LanosT150.jpg"));
+            //_cardataStorage.InsertRecord("Autos", new Car("VOLVO", "244", "VARIATOR", 37, "/Resources/VOLVO244.jpg"));
         }
 
         internal static StationManager Instance
@@ -64,6 +59,12 @@ namespace AutoService.Tools.Managers
 
         internal static User CurrentUser { get; set; }
 
+        internal static UserDataStorage DataStorage
+        {
+            get { return _userdataStorage; }
+        }
+
+        #region Cars MongoDB
         internal static List<Car> getAllCars() { return _cardataStorage.LoadRecords<Car>("Autos"); }
 
         internal static List<string> getAllMarks()
@@ -130,12 +131,9 @@ namespace AutoService.Tools.Managers
                 os.Add(new CarViewModel(carlist[i]));
             return os;
         }
+        #endregion
 
-        internal static void LogOut()
-        {
-            Debug.Assert(CurrentUser != null);
-            CurrentUser = null;
-        }
+        #region Cars Rent
 
         internal static void AddCarRent(Guid carId, long userId, DateTime timeBegin, DateTime timeEnd)
         {
@@ -151,10 +149,27 @@ namespace AutoService.Tools.Managers
             return _userdataStorage.RentAvail(CurrentUser.ID);
         }
 
+        internal static Car CarRented()
+        {
+            Guid? carGuid = _userdataStorage.CarRented(CurrentUser.ID);
+            if (carGuid == null) return null;
+            return _cardataStorage.LoadRecordById<Car>("Autos", (Guid)carGuid);
+        }
+
         internal static List<Guid> AllCarsInRent()
         {
             Debug.Assert(CurrentUser != null);
             return _userdataStorage.AllCarsInRent();
+        }
+
+        #endregion
+
+        #region User
+
+        internal static void LogOut()
+        {
+            Debug.Assert(CurrentUser != null);
+            CurrentUser = null;
         }
 
         internal static void Login(string login, string password)
@@ -183,10 +198,7 @@ namespace AutoService.Tools.Managers
             _userdataStorage.AddUser(us);
         }
 
-        internal static UserDataStorage DataStorage
-        {
-            get { return _userdataStorage; }
-        }
+        #endregion
 
     }
 }

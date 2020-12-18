@@ -12,10 +12,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="220"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -41,7 +42,18 @@
                 Command ="{Binding LogOutCommand}"
         >Log out</Button>
 
-        <Label Grid.Row="2" Grid.Column="2" Margin="5" FontSize="14" VerticalAlignment="Bottom" Foreground="White"
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="5 5 5 5" FontSize="14" VerticalAlignment="Top" 
+                   Foreground="White"
+               HorizontalAlignment="Left" 
+               Text="{Binding CarRentedInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+
+        <Image Width="200" Height="120"  Margin="5" Grid.RowSpan="1" Grid.Column="0" Grid.Row="2"
+               HorizontalAlignment="Left" 
+               Source="{Binding PhotoImg, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        </Image>
+        
+
+        <Label Grid.Row="3" Grid.Column="2" Margin="5" FontSize="14" VerticalAlignment="Bottom" Foreground="White"
                HorizontalContentAlignment="Right" >Developed by Artem Hak, IPZ-3</Label>
     </Grid>
     

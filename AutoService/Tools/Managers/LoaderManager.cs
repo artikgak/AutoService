@@ -25,7 +25,6 @@ namespace AutoService.Tools.Managers
 
         private LoaderManager()
         {
-
         }
 
         internal void Initialize(ILoaderOwner loaderOwner)

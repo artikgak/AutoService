@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using AutoService.ViewModels;
+using System.Windows.Media.Imaging;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Drawing;
+using System.Windows.Media;
 
 namespace AutoService.Models
 {
@@ -16,7 +18,7 @@ namespace AutoService.Models
         private string _model;
         private string _gearBox;
         private int _price;
-
+        private string _imgSource;
         private string _carInfo;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -70,6 +72,16 @@ namespace AutoService.Models
             }
         }
 
+        public Uri ImgSource
+        {
+            get { return new Uri(_imgSource, UriKind.Relative); }
+            set
+            {
+                _imgSource = value.ToString();
+                OnPropertyChanged();
+            }
+        }
+
         public int Price
         {
             get { return _price; }
@@ -80,6 +92,7 @@ namespace AutoService.Models
             }
         }
 
+        [BsonIgnore]
         public string CarInfo
         { 
             get 
@@ -100,9 +113,12 @@ namespace AutoService.Models
         {
             return $"Model: {Model}\nGearBox: {GearBox}";
         }
+        #endregion
 
+        #region Constructors
         public Car() 
         {
+            _imgSource = "";
             _mark = "";
             _model = "";
             _gearBox = "";
@@ -112,6 +128,17 @@ namespace AutoService.Models
 
         public Car(string mark, string model, string gearbox, int price)
         {
+            _imgSource = "";
+            _mark = mark;
+            _model = model;
+            _gearBox = gearbox;
+            _price = price;
+            CarInfo = ToString();
+        }
+
+        public Car(string mark, string model, string gearbox, int price, string image)
+        {
+            _imgSource = image;
             _mark = mark;
             _model = model;
             _gearBox = gearbox;

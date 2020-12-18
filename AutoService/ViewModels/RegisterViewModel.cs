@@ -18,12 +18,14 @@ namespace AutoService.ViewModels
         private string _email;
         private string _password1;
         private string _password2;
-        #endregion
         #region Commands
         private RelayCommand<object> _registerCommand;
         private RelayCommand<object> _backToSignInCommand;
         private RelayCommand<object> _closeCommand;
+        #endregion
+        #endregion
 
+        #region Properties
         public string Login
         {
             get { return _login; }
@@ -63,7 +65,9 @@ namespace AutoService.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region Commands
         public RelayCommand<object> RegisterCommand
         {
             get
@@ -89,13 +93,6 @@ namespace AutoService.ViewModels
             {
                 return _closeCommand ?? (_closeCommand = new RelayCommand<object>(o => Environment.Exit(0)));
             }
-        }
-
-        #endregion
-        private bool CanExecuteCommand()
-        {
-            return !string.IsNullOrWhiteSpace(_login) && !string.IsNullOrWhiteSpace(_email)
-                && !string.IsNullOrWhiteSpace(_password1) && !string.IsNullOrWhiteSpace(_password2);
         }
 
         private async void RegisterImplementation(object obj)
@@ -138,7 +135,6 @@ namespace AutoService.ViewModels
                     StationManager.Register(us);
                     MessageBox.Show($"Register successful");
                     regSuc = true;
-                    // log login successful
                     Login = "";
                     Email = "";
                     Password1 = "";
@@ -174,6 +170,13 @@ namespace AutoService.ViewModels
             NavigationManager.Instance.Navigate(ViewType.SignIn);
         }
 
+        private bool CanExecuteCommand()
+        {
+            return !string.IsNullOrWhiteSpace(_login) && !string.IsNullOrWhiteSpace(_email)
+                && !string.IsNullOrWhiteSpace(_password1) && !string.IsNullOrWhiteSpace(_password2);
+        }
+
+        #endregion
 
     }
 }

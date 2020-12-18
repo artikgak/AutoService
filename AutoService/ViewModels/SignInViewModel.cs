@@ -42,9 +42,9 @@ namespace AutoService.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         #region Commands
-
         public RelayCommand<object> SignInCommand
         {
             get
@@ -71,9 +71,6 @@ namespace AutoService.ViewModels
                 return _closeCommand ?? (_closeCommand = new RelayCommand<object>(o => Environment.Exit(0)));
             }
         }
-
-        #endregion
-        #endregion
 
         private bool CanExecuteCommand()
         {
@@ -117,5 +114,6 @@ namespace AutoService.ViewModels
             NavigationManager.Instance.Navigate(ViewType.Register);
         }
 
+        #endregion
     }
 }

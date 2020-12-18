@@ -1,22 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using AutoService.Models;
 using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
-using AutoService.Tools.Navigation;
 
 namespace AutoService.ViewModels
 {
     internal class CarViewModel : BaseViewModel
     {
 
+        #region Fields
+        private Car _car;
+        private string _rented;
+        private Brush _backColor;
+
+        #region Commands
+        private RelayCommand<object> _rentCommand;
+        #endregion
+        #endregion
+
+        #region Constructors
         internal CarViewModel() 
         {
             _car = new Car();
@@ -30,14 +37,9 @@ namespace AutoService.ViewModels
             _backColor = Brushes.SandyBrown;
             _rented = null;
         }
-
-        private Car _car;
-        private string _rented;
-        private Brush _backColor;
-
-        #region Commands
-        private RelayCommand<object> _rentCommand;
         #endregion
+
+        #region Properties
 
         public Car Car 
         { 
@@ -95,8 +97,15 @@ namespace AutoService.ViewModels
         private string _totalPrice;
         private DateTime? _dateTimePicked = DateTime.Now;
 
-
-
+        public Uri ImgSource
+        {
+            get { return Car.ImgSource; }
+            set
+            {
+                Car.ImgSource = value;
+                OnPropertyChanged();
+            }
+        }
         public DateTime TimePicked
         {
             get { return (DateTime)_dateTimePicked; }
@@ -121,14 +130,6 @@ namespace AutoService.ViewModels
             }
         }
 
-        public void ReculcTotalPrice() 
-        {
-            double priceH = (double)Car.Price / 60;
-            double min = (double)_dateTimePicked.Value.Subtract(DateTime.Now).TotalMinutes;
-            TotalPriceVal = min *priceH;
-            TotalPrice = TotalPriceVal <= 0 ? "Please, select valid time/date" : "Total sum: " + (Math.Round(TotalPriceVal, 2)).ToString()+"grn";
-        }
-
         public double TotalPriceVal { get; set; }
 
         public string TotalPrice
@@ -151,7 +152,9 @@ namespace AutoService.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region Commands
         public RelayCommand<object> RentCommand
         {
             get
@@ -190,6 +193,15 @@ namespace AutoService.ViewModels
                     $"\nare having car rented now.\n\nCompany policy allows only one rent \nat a time for each person.\n\n" +
                     $"If you still have any questions,\nplease contant us: helpCar.Rent@car.rent"
                         , "Rent restricted !!!");
+        }
+        #endregion
+
+        public void ReculcTotalPrice()
+        {
+            double priceH = (double)Car.Price / 60;
+            double min = (double)_dateTimePicked.Value.Subtract(DateTime.Now).TotalMinutes;
+            TotalPriceVal = min * priceH;
+            TotalPrice = TotalPriceVal <= 0 ? "Please, select valid time/date" : "Total sum: " + (Math.Round(TotalPriceVal, 2)).ToString() + "grn";
         }
 
         private bool CanExecuteCommand()

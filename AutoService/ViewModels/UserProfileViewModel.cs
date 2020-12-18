@@ -1,18 +1,47 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using AutoService.Tools;
 using AutoService.Tools.Managers;
 using AutoService.Tools.MVVM;
 using AutoService.Tools.Navigation;
 
 namespace AutoService.ViewModels
 {
-    class UserProfileViewModel
+    class UserProfileViewModel : BaseViewModel
     {
 
-        #region Fields
+        #region Fields Properties
+
+        private string _carRentedInfo;
 
         public string UserInfo
         {
             get { return StationManager.CurrentUser.ToString(); }
+        }
+
+        public string CarRentedInfo
+        {
+            get 
+            {
+                _carRentedInfo = StationManager.CarRented() != null ? "Present car in rent:\n" + StationManager.CarRented().ToString()
+                    : "No car rented at present.";
+                return _carRentedInfo;
+            }
+            set
+            {
+                _carRentedInfo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Uri PhotoImg
+        {
+            get
+            {
+                return StationManager.CarRented() != null
+                    ? StationManager.CarRented().ImgSource
+                    : null;
+            }
         }
 
         #region Commands
@@ -20,7 +49,6 @@ namespace AutoService.ViewModels
         private RelayCommand<object> _logOutCommand;
         #endregion
         #endregion
-
 
         #region Commands
         public RelayCommand<object> BackToCatalogCommand
@@ -40,7 +68,7 @@ namespace AutoService.ViewModels
                            LogOutImplementation));
             }
         }
-        #endregion
+        
 
         private void BackToCatalogImplementation(object obj)
         {
@@ -59,6 +87,6 @@ namespace AutoService.ViewModels
             LoaderManager.Instance.HideLoader();
             NavigationManager.Instance.Navigate(ViewType.SignIn);
         }
-
+        #endregion
     }
 }

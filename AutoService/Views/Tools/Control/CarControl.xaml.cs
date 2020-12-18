@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using AutoService.ViewModels;
 
 namespace AutoService.Views.Tools.Control
 {

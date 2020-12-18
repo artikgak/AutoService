@@ -344,6 +344,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>User.mdf</DependentUpon>
     </Content>
+    <Resource Include="Resources\Audie-tron.jpg" />
+    <Resource Include="Resources\Audi100.jpg" />
+    <Resource Include="Resources\Audie-tron.gif" />
+    <Resource Include="Resources\AudiQ7.jpg" />
+    <Resource Include="Resources\BMW4-series.jpg" />
+    <Resource Include="Resources\BMWX5.jpg" />
+    <Resource Include="Resources\BMWZ8.jpg" />
+    <Resource Include="Resources\LanosT150.jpg" />
+    <Resource Include="Resources\MOSKVYCH2141.jpg" />
+    <Resource Include="Resources\VOLVO244.jpg" />
     <Resource Include="Resources\icon.png" />
     <Resource Include="Resources\carback.jpg" />
   </ItemGroup>

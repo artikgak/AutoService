@@ -5,11 +5,15 @@ namespace AutoService.Models
 {
     internal class User
     {
+
+        #region Fields
         private long _id;
         private string _login;
         private string _password;
         private string _email;
+        #endregion
 
+        #region Constructors
         public User(long id, string login, string password, string email)
         {
             _id = id;
@@ -29,11 +33,9 @@ namespace AutoService.Models
             _email = email;
         }
 
-        private bool IsEmailValid(string email)
-        {
-            return Regex.IsMatch(email, "\\w+@(\\w+.)+[a-z]{2,4}", RegexOptions.IgnoreCase);
-        }
+        #endregion
 
+        #region Properties
         public string Login
         {
             get { return _login; }
@@ -55,22 +57,16 @@ namespace AutoService.Models
         {
             get { return _id; }
         }
-
-        private void SetPassword(string password)
-        {
-            //TODO Add encription
-            _password = password;
-        }
-
-        internal bool CheckPassword(string password)
-        {
-            //TODO Compare encrypted passwords
-            return _password == password;
-        }
+        #endregion
 
         public override string ToString()
         {
             return $"User: {Login}\nEmail: {Email}";
+        }
+
+        private bool IsEmailValid(string email)
+        {
+            return Regex.IsMatch(email, "\\w+@(\\w+.)+[a-z]{2,4}", RegexOptions.IgnoreCase);
         }
 
     }
